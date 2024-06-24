@@ -12,11 +12,13 @@ class DataSchema(BaseModel):
     creation_date: datetime = datetime.now()
     update_date: datetime = datetime.now()
     check_date: datetime = datetime.now()
+    source: str =\
+        "https://data.gov.ie/dataset/counties-national-statutory-boundaries-2019"
     creator: str = "Tailte Éireann – Surveying"
     permitted: bool = True
     copyright: str = "Creative Commons Attribution 4.0"
     format: str = "SHP"
-    link: str = "\Dataset\Ireland\Counties"
+    link: str = "\\Dataset\\Ireland\\Counties"
     info: str = "None"
     coordinate_system: str = "ITM"
     area: str = "All Ireland"
@@ -47,6 +49,7 @@ def show_dataset(dataset: List[Data]):
             "creation_date": data.creation_date,
             "update_date": data.update_date,
             "check_date": data.check_date,
+            "source": data.source,
             "creator": data.creator,
             "permitted": data.permitted,
             "copyright": data.copyright,
@@ -69,6 +72,8 @@ class DataViewSchema(BaseModel):
     creation_date: datetime = datetime.now()
     update_date: datetime = datetime.now()
     check_date: datetime = datetime.now()
+    source: str =\
+        "https://data.gov.ie/dataset/counties-national-statutory-boundaries-2019"
     creator: str = "Ireland County Boundaries"
     permitted: bool = True
     copyright: str = "Ireland County Boundaries"
@@ -98,6 +103,7 @@ def show_data(data: Data):
         "creation_date": data.creation_date,
         "update_date": data.update_date,
         "check_date": data.check_date,
+        "source": data.source,
         "creator": data.creator,
         "permitted": data.permitted,
         "copyright": data.copyright,

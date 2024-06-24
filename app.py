@@ -1,7 +1,6 @@
 from flask_openapi3 import OpenAPI, Info, Tag
 from flask import redirect
 from urllib.parse import unquote
-from datetime import datetime
 
 from sqlalchemy.exc import IntegrityError
 
@@ -23,11 +22,6 @@ data_tag = Tag(
     name="Dado",
     description="Adição, visualização e remoção de dado à/da base"
     )
-"""comentario_tag = Tag(
-    name="Comentario", 
-    description="Adição de um comentário à um produtos cadastrado na base"
-    )"""
-
 
 @app.get('/', tags=[home_tag])
 def home():
@@ -52,6 +46,7 @@ def add_data(form: DataSchema):
         name=form.name,
         description=form.description,
         check_date=form.check_date,
+        source=form.source,
         creator=form.creator,
         permitted=form.permitted,
         copyright=form.copyright,
@@ -160,38 +155,3 @@ def del_data(query: DataSearchSchema):
         error_msg = "Dado não encontrado na base :/"
         logger.warning(f"Erro ao deletar dado #'{data_name}', {error_msg}")
         return {"message": error_msg}, 404
-
-'''
-@app.post('/cometario', tags=[comentario_tag],
-          responses={"200": ProdutoViewSchema, "404": ErrorSchema})
-def add_comentario(form: ComentarioSchema):
-    """Adiciona de um novo comentário à um produtos cadastrado na base identificado pelo id
-
-    Retorna uma representação dos produtos e comentários associados.
-    """
-    produto_id  = form.produto_id
-    logger.debug(f"Adicionando comentários ao produto #{produto_id}")
-    # criando conexão com a base
-    session = Session()
-    # fazendo a busca pelo produto
-    produto = session.query(Produto).filter(Produto.id == produto_id).first()
-
-    if not produto:
-        # se produto não encontrado
-        error_msg = "Produto não encontrado na base :/"
-        logger.warning(f"Erro ao adicionar comentário ao produto '{produto_id}', {error_msg}")
-        return {"mesage": error_msg}, 404
-
-    # criando o comentário
-    texto = form.texto
-    comentario = Comentario(texto)
-
-    # adicionando o comentário ao produto
-    produto.adiciona_comentario(comentario)
-    session.commit()
-
-    logger.debug(f"Adicionado comentário ao produto #{produto_id}")
-
-    # retorna a representação de produto
-    return apresenta_produto(produto), 200
-'''

@@ -14,6 +14,7 @@ class Data(Base):
     creation_date = Column(DateTime)
     update_date = Column(DateTime)
     check_date = Column(DateTime, default=datetime.now(), nullable=False)
+    source = Column(String(140))
     creator = Column(String(140))
     permitted = Column(Boolean, default=False, nullable=False)
     copyright = Column(String(140))
@@ -32,6 +33,7 @@ class Data(Base):
     def __init__(self, name: str, description: str,
                  check_date: DateTime,
                  creator: str,
+                 source: str,
                  permitted: bool,
                  copyright: str,
                  link: str,
@@ -62,7 +64,7 @@ class Data(Base):
 
         if check_date:
             self.check_date = check_date
-
+        self.source = source
         self.creator = creator
         self.permitted = permitted
         self.copyright = copyright
@@ -71,10 +73,3 @@ class Data(Base):
         self.info = info
         self.coordinate_system = coordinate_system
         self.area = area
-
-'''
-    def adiciona_comentario(self, comentario:Comentario):
-        """ Adiciona um novo comentário ao Produto
-        """
-        self.comentarios.append(comentario)
-'''
