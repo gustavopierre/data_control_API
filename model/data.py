@@ -8,8 +8,8 @@ from model import Base
 class Data(Base):
     __tablename__ = 'data'
 
-    id = Column("pk_data", Integer, primary_key=True, autoincrement=True)
-    name = Column(String(140))
+    name = Column(String(140), primary_key=True)
+    area = Column(String(140))
     description = Column(String(255))
     creation_date = Column(DateTime)
     update_date = Column(DateTime)
@@ -22,7 +22,7 @@ class Data(Base):
     link = Column(String(140))
     info = Column(String(255))
     coordinate_system = Column(String(140))
-    area = Column(String(140))
+    
 
     # Definição do relacionamento entre o produto e o comentário.
     # Essa relação é implicita, não está salva na tabela 'produto',
@@ -30,7 +30,10 @@ class Data(Base):
     # de reconstruir esse relacionamento.
     # comentarios = relationship("Comentario")
 
-    def __init__(self, name: str, description: str,
+    def __init__(self, 
+                 name: str,
+                 area: str,
+                 description: str,
                  check_date: DateTime,
                  creator: str,
                  source: str,
@@ -39,10 +42,9 @@ class Data(Base):
                  link: str,
                  info: str,
                  coordinate_system: str,
-                 area: str,
                  creation_date: Union[DateTime, None] = None,
                  update_date: Union[DateTime, None] = None,
-                 format: str = "SHP"):
+                 format: str):
         """
         Cria um Produto
 
@@ -53,6 +55,7 @@ class Data(Base):
             data_insercao: data de quando o produto foi inserido à base
         """
         self.name = name
+        self.area = area
         self.description = description
 
         # se não for informada, será o data exata da inserção no banco
@@ -72,4 +75,4 @@ class Data(Base):
         self.link = link
         self.info = info
         self.coordinate_system = coordinate_system
-        self.area = area
+        

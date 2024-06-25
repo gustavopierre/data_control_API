@@ -44,8 +44,8 @@ def add_data(form: DataSchema):
     Retorna uma representação dos dados.
     """
     data = Data(
-        area=form.area,
         name=form.name,
+        area=form.area,
         description=form.description,
         check_date=form.check_date,
         source=form.source,
@@ -69,7 +69,7 @@ def add_data(form: DataSchema):
         session.commit()
         logger.debug(f"Adicionado dado de nome: '{data.name}'")
         return show_data(data), 200
-# CORRIGIR
+
     except IntegrityError:
         # como a duplicidade do nome é a provável razão do IntegrityError
         error_msg = "Dado de mesmo nome já salvo na base :/"
@@ -113,17 +113,17 @@ def get_data(query: DataSearchSchema):
 
     Retorna uma representação dos produtos e comentários associados.
     """
-    data_id = query.id
-    logger.debug(f"Coletando dados sobre produto #{data_id}")
+    data_name = query.name
+    logger.debug(f"Coletando dados sobre produto #{data_name}")
     # criando conexão com a base
     session = Session()
     # fazendo a busca
-    data = session.query(Data).filter(Data.id == data_id).first()
+    data = session.query(Data).filter(Data.id == data_name).first()
 
     if not data:
         # se o produto não foi encontrado
         error_msg = "Dado não encontrado na base :/"
-        logger.warning(f"Erro ao buscar dado '{data_id}', {error_msg}")
+        logger.warning(f"Erro ao buscar dado '{data_name}', {error_msg}")
         return {"message": error_msg}, 404
     else:
         logger.debug(f"Dado econtrado: '{data.name}'")

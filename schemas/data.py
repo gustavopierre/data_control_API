@@ -8,6 +8,7 @@ class DataSchema(BaseModel):
     """ Define como um novo dado a ser inserido deve ser representado
     """
     name: str = "Ireland County Boundaries"
+    area: str = "All Ireland"
     description: str = "Ireland County Boundaries"
     creation_date: datetime = datetime.now()
     update_date: datetime = datetime.now()
@@ -21,14 +22,13 @@ class DataSchema(BaseModel):
     link: str = "\\Dataset\\Ireland\\Counties"
     info: str = "None"
     coordinate_system: str = "ITM"
-    area: str = "All Ireland"
 
 
 class DataSearchSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
         feita apenas com base na area do dado.
     """
-    area: str = "Teste"
+    name: str = "Teste"
 
 
 class ListDatasetSchema(BaseModel):
@@ -45,6 +45,7 @@ def show_dataset(dataset: List[Data]):
     for data in dataset:
         result.append({
             "name": data.name,
+            "area": data.area,
             "description": data.description,
             "creation_date": data.creation_date,
             "update_date": data.update_date,
@@ -56,8 +57,7 @@ def show_dataset(dataset: List[Data]):
             "format": data.format,
             "link": data.link,
             "info": data.info,
-            "coordinate_system": data.coordinate_system,
-            "area": data.area,
+            "coordinate_system": data.coordinate_system
         })
 
     return {"dataset": result}
@@ -66,8 +66,8 @@ def show_dataset(dataset: List[Data]):
 class DataViewSchema(BaseModel):
     """ Define como um dado será retornado.
     """
-    id: int = 1
     name: str = "Ireland County Boundaries"
+    area: str = "All Ireland"
     description: str = "Ireland County Boundaries"
     creation_date: datetime = datetime.now()
     update_date: datetime = datetime.now()
@@ -81,8 +81,7 @@ class DataViewSchema(BaseModel):
     link: str = "Ireland County Boundaries"
     info: str = "Ireland County Boundaries"
     coordinate_system: str = "ITM"
-    area: str = "All Ireland"
-
+    
 
 class DataDelSchema(BaseModel):
     """ Define como deve ser a estrutura do dado retornado após uma requisição
@@ -97,8 +96,8 @@ def show_data(data: Data):
         DataViewSchema.
     """
     return {
-        "id": data.id,
         "name": data.name,
+        "area": data.area,
         "description": data.description,
         "creation_date": data.creation_date,
         "update_date": data.update_date,
@@ -110,6 +109,5 @@ def show_data(data: Data):
         "format": data.format,
         "link": data.link,
         "info": data.info,
-        "coordinate_system": data.coordinate_system,
-        "area": data.area
+        "coordinate_system": data.coordinate_system
     }
