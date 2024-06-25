@@ -23,6 +23,7 @@ data_tag = Tag(
     description="Adição, visualização e remoção de dado à/da base"
     )
 
+
 @app.get('/', tags=[home_tag])
 def home():
     """Redireciona para /openapi, tela que permite a escolha do estilo
@@ -43,6 +44,7 @@ def add_data(form: DataSchema):
     Retorna uma representação dos dados.
     """
     data = Data(
+        area=form.area,
         name=form.name,
         description=form.description,
         check_date=form.check_date,
@@ -53,7 +55,6 @@ def add_data(form: DataSchema):
         link=form.link,
         info=form.info,
         coordinate_system=form.coordinate_system,
-        area=form.area,
         creation_date=form.creation_date,
         update_date=form.update_date,
         format=form.format)
@@ -68,7 +69,7 @@ def add_data(form: DataSchema):
         session.commit()
         logger.debug(f"Adicionado dado de nome: '{data.name}'")
         return show_data(data), 200
-
+# CORRIGIR
     except IntegrityError:
         # como a duplicidade do nome é a provável razão do IntegrityError
         error_msg = "Dado de mesmo nome já salvo na base :/"
