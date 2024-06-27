@@ -1,5 +1,4 @@
 from sqlalchemy import Column, String, Integer, DateTime, Boolean
-# from sqlalchemy.orm import relationship
 from datetime import datetime
 from typing import Union
 from model import Base
@@ -11,53 +10,64 @@ class Data(Base):
     name = Column(String(140), primary_key=True)
     area = Column(String(140))
     description = Column(String(255))
-    creation_date = Column(DateTime)
-    update_date = Column(DateTime)
-    check_date = Column(DateTime, default=datetime.now(), nullable=False)
     source = Column(String(140))
     creator = Column(String(140))
-    permitted = Column(Boolean, default=False, nullable=False)
+    permitted = Column(Boolean, default=True, nullable=False)
     copyright = Column(String(140))
-    format = Column(String(150), nullable=False)
     link = Column(String(140))
     info = Column(String(255))
     coordinate_system = Column(String(140))
+    creation_date = Column(DateTime)
+    update_date = Column(DateTime)
+    check_date = Column(DateTime, default=datetime.now(), nullable=False)
+    format = Column(String(150), nullable=False)
     
-
-    # Definição do relacionamento entre o produto e o comentário.
-    # Essa relação é implicita, não está salva na tabela 'produto',
-    # mas aqui estou deixando para SQLAlchemy a responsabilidade
-    # de reconstruir esse relacionamento.
-    # comentarios = relationship("Comentario")
 
     def __init__(self, 
                  name: str,
                  area: str,
                  description: str,
-                 check_date: DateTime,
-                 creator: str,
                  source: str,
+                 creator: str,
                  permitted: bool,
                  copyright: str,
                  link: str,
                  info: str,
                  coordinate_system: str,
+                 check_date: DateTime,
+                 format: str,
                  creation_date: Union[DateTime, None] = None,
                  update_date: Union[DateTime, None] = None,
-                 format: str = "shp"):
+                 ):
         """
-        Cria um Produto
+        Creates a data
 
         Arguments:
-            nome: nome do produto.
-            quantidade: quantidade que se espera comprar daquele produto
-            valor: valor esperado para o produto
-            data_insercao: data de quando o produto foi inserido à base
+            name {str} -- name of the data
+            area {str} -- area of the data
+            description {str} -- description of the data
+            source {str} -- source of the data (where it was originally obtained)
+            creator {str} -- creator of the data
+            permitted {bool} -- if thedata is permitted to be used
+            copyright {str} -- copyright
+            link {str} -- link to the data (directory, link of webserver, link api, etc)
+            info {str} -- additional information
+            coordinate_system {str} -- coordinate system of the data
+            creation_date {Union[DateTime, None]} -- date of the creation of the data (default: {None})
+            update_date {Union[DateTime, None]} -- date of the last update of the data (default: {None})
+            check_date {DateTime} -- date of the last check
+            format {str} -- format of the data (default: {"shp"})            
         """
         self.name = name
         self.area = area
-        self.description = description
-
+        self.description = description        
+        self.source = source
+        self.creator = creator
+        self.permitted = permitted
+        self.copyright = copyright
+        self.link = link
+        self.info = info
+        self.coordinate_system = coordinate_system
         # se não for informada, será o data exata da inserção no banco
         if creation_date:
             self.creation_date = creation_date
@@ -67,12 +77,4 @@ class Data(Base):
 
         if check_date:
             self.check_date = check_date
-        self.source = source
-        self.creator = creator
-        self.permitted = permitted
-        self.copyright = copyright
         self.format = format
-        self.link = link
-        self.info = info
-        self.coordinate_system = coordinate_system
-        
