@@ -17,8 +17,8 @@ class Data(Base):
     link = Column(String(140))
     info = Column(String(255))
     coordinate_system = Column(String(140))
-    creation_date = Column(DateTime)
-    update_date = Column(DateTime)
+    creation_date = Column(String)
+    update_date = Column(String)
     check_date = Column(DateTime, default=datetime.now(), nullable=False)
     format = Column(String(150), nullable=False)
     
@@ -34,10 +34,10 @@ class Data(Base):
                  link: str,
                  info: str,
                  coordinate_system: str,
-                 format: str,
-                 creation_date: Union[str, None] = None,
-                 update_date: Union[str, None] = None,
-                 check_date: str = datetime.now().strftime("%d/%m/%Y"),
+                 creation_date: str,
+                 update_date: str,
+                 check_date: datetime,
+                 format: str
                  ):
         """
         Creates a data
@@ -53,10 +53,10 @@ class Data(Base):
             link {str} -- link to the data (directory, link of webserver, link api, etc)
             info {str} -- additional information
             coordinate_system {str} -- coordinate system of the data
-            creation_date {Union[DateTime, None]} -- date of the creation of the data (default: {None})
-            update_date {Union[DateTime, None]} -- date of the last update of the data (default: {None})
-            check_date {DateTime} -- date of the last check
-            format {str} -- format of the data (default: {"shp"})            
+            creation_date {str} -- date of the creation of the data 
+            update_date {str} -- date of the last update of the data 
+            check_date {datetime} -- date of the last check of the data
+            format {str} -- format of the data (shapefile, geopackage, etc)           
         """
         self.name = name
         self.area = area
@@ -68,12 +68,11 @@ class Data(Base):
         self.link = link
         self.info = info
         self.coordinate_system = coordinate_system
-        # se não for informada, será o data exata da inserção no banco
-        if creation_date:
-            self.creation_date = datetime.strptime(creation_date, "%d/%m/%Y")
-
-        if update_date:
-            self.update_date = datetime.strptime(update_date, "%d/%m/%Y")
-
+        self.creation_date = creation_date
+        self.update_date = update_date
+        self.check_date = check_date
         self.format = format
-        self.check_date = datetime.strptime(check_date, "%d/%m/%Y")
+                
+        print(f"Data created: {self.creation_date}")
+        print(f"Data updated: {self.update_date}")
+        print(f"Data checked: {self.check_date}")
