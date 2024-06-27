@@ -34,10 +34,10 @@ class Data(Base):
                  link: str,
                  info: str,
                  coordinate_system: str,
-                 check_date: DateTime,
                  format: str,
-                 creation_date: Union[DateTime, None] = None,
-                 update_date: Union[DateTime, None] = None,
+                 creation_date: Union[str, None] = None,
+                 update_date: Union[str, None] = None,
+                 check_date: str = datetime.now().strftime("%d/%m/%Y"),
                  ):
         """
         Creates a data
@@ -70,11 +70,10 @@ class Data(Base):
         self.coordinate_system = coordinate_system
         # se não for informada, será o data exata da inserção no banco
         if creation_date:
-            self.creation_date = creation_date
+            self.creation_date = datetime.strptime(creation_date, "%d/%m/%Y")
 
         if update_date:
-            self.update_date = update_date
+            self.update_date = datetime.strptime(update_date, "%d/%m/%Y")
 
-        if check_date:
-            self.check_date = check_date
         self.format = format
+        self.check_date = datetime.strptime(check_date, "%d/%m/%Y")
