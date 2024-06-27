@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, DateTime, Boolean
+from sqlalchemy import Column, String, DateTime, Boolean, Integer
 from datetime import datetime
 from typing import Union
 from model import Base
@@ -7,7 +7,8 @@ from model import Base
 class Data(Base):
     __tablename__ = 'data'
 
-    name = Column(String(140), primary_key=True)
+    id = Column("pk_data", Integer, primary_key=True, autoincrement=True)
+    name = Column(String(140), unique=True)
     area = Column(String(140))
     description = Column(String(255))
     source = Column(String(140))
@@ -16,14 +17,13 @@ class Data(Base):
     copyright = Column(String(140))
     link = Column(String(140))
     info = Column(String(255))
-    coordinate_system = Column(String(140))
-    creation_date = Column(String)
-    update_date = Column(String)
-    check_date = Column(DateTime, default=datetime.now(), nullable=False)
+    coordinate_system = Column(String(140), nullable=False)
+    creation_date = Column(String(10))
+    update_date = Column(String(10))
     format = Column(String(150), nullable=False)
-    
+    check_date = Column(DateTime, default=datetime.now())
 
-    def __init__(self, 
+    def __init__(self,
                  name: str,
                  area: str,
                  description: str,
@@ -36,8 +36,8 @@ class Data(Base):
                  coordinate_system: str,
                  creation_date: str,
                  update_date: str,
-                 check_date: datetime,
-                 format: str
+                 format: str,
+                 check_date: Union[DateTime, None] = None
                  ):
         """
         Creates a data
@@ -46,21 +46,23 @@ class Data(Base):
             name {str} -- name of the data
             area {str} -- area of the data
             description {str} -- description of the data
-            source {str} -- source of the data (where it was originally obtained)
+            source {str} -- source of the data (where it was originally
+                    obtained)
             creator {str} -- creator of the data
             permitted {bool} -- if thedata is permitted to be used
             copyright {str} -- copyright
-            link {str} -- link to the data (directory, link of webserver, link api, etc)
+            link {str} -- link to the data (directory, link of webserver,
+                    link api, etc)
             info {str} -- additional information
             coordinate_system {str} -- coordinate system of the data
-            creation_date {str} -- date of the creation of the data 
-            update_date {str} -- date of the last update of the data 
-            check_date {datetime} -- date of the last check of the data
-            format {str} -- format of the data (shapefile, geopackage, etc)           
+            creation_date {str} -- date of the creation of the data
+            update_date {str} -- date of the last update of the data
+            format {str} -- format of the data (shapefile, geopackage, etc)
+            check_date {Union[DateTime, None]} -- date of the check of the data
         """
         self.name = name
         self.area = area
-        self.description = description        
+        self.description = description
         self.source = source
         self.creator = creator
         self.permitted = permitted
@@ -70,9 +72,7 @@ class Data(Base):
         self.coordinate_system = coordinate_system
         self.creation_date = creation_date
         self.update_date = update_date
-        self.check_date = check_date
         self.format = format
-                
-        print(f"Data created: {self.creation_date}")
-        print(f"Data updated: {self.update_date}")
-        print(f"Data checked: {self.check_date}")
+        # se não for informada, será o data exata da inserção no banco
+        if check_date:
+            self.check_date = check_date

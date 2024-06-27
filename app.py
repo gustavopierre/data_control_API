@@ -9,25 +9,24 @@ from logger import logger
 from schemas import *
 from flask_cors import CORS
 
-info = Info(title="DataControl API", version="1.0.1")
+info = Info(title="DataControl API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
 # definindo tags
 home_tag = Tag(
-    name="Documentação",
-    description="Seleção de documentação: Swagger, Redoc ou RapiDoc"
+    name="Documentation",
+    description="Documentation Selection: Swagger, Redoc ou RapiDoc"
     )
 data_tag = Tag(
-    name="Dado",
-    description="Adição, visualização e remoção de dado à/da base"
+    name="Data",
+    description="Adding, Viewing and Removing Data to/from the Database"
     )
 
 
 @app.get('/', tags=[home_tag])
 def home():
-    """Redireciona para /openapi, tela que permite a escolha do estilo
-       de documentação.
+    """Redirects to /openapi, where it allows the choice of documentation style.
     """
     return redirect('/openapi')
 
@@ -39,15 +38,14 @@ def home():
               "400": ErrorSchema
               })
 def add_data(form: DataSchema):
-    """Adiciona um novo Dado à base de dados
+    """Add a new Data to the database
 
-    Retorna uma representação dos dados.
+    Returns a representation of the data.
     """
     data = Data(
         name=form.name,
         area=form.area,
         description=form.description,
-        check_date=form.check_date,
         source=form.source,
         creator=form.creator,
         permitted=form.permitted,
@@ -59,27 +57,27 @@ def add_data(form: DataSchema):
         update_date=form.update_date,
         format=form.format)
 
-    logger.debug(f"Adicionando dado de nome: '{data.name}'")
+    logger.debug(f"Adding Data named: '{data.name}'")
     try:
-        # criando conexão com a base
+        # creating a connection with the database
         session = Session()
-        # adicionando dado
+        # adding data to the session
         session.add(data)
-        # efetivando o camando de adição de novo item na tabela
+        # effectively executing the command to add new data to the table
         session.commit()
-        logger.debug(f"Adicionado dado de nome: '{data.name}'")
+        logger.debug(f"Added Data named: '{data.name}'")
         return show_data(data), 200
 
     except IntegrityError:
-        # como a duplicidade do nome é a provável razão do IntegrityError
-        error_msg = "Dado de mesmo nome já salvo na base :/"
-        logger.warning(f"Erro ao adicionar dado '{data.name}', {error_msg}")
+        # name duplicity is the likely reason for the IntegrityError
+        error_msg = "Data has same name as one saved on the database :/"
+        logger.warning(f"Error to add data '{data.name}', {error_msg}")
         return {"message": error_msg}, 409
 
     except Exception:
         # caso um erro fora do previsto
-        error_msg = "Não foi possível salvar novo dado :/"
-        logger.warning(f"Erro ao adicionar data '{data.name}', {error_msg}")
+        error_msg = "It is not possible to save new data :/"
+        logger.warning(f"Error to add data '{data.name}', {error_msg}")
         return {"message": error_msg}, 400
 
 
@@ -100,7 +98,7 @@ def get_dataset():
         # se não há produtos cadastrados
         return {"Dataset": []}, 200
     else:
-        logger.debug(f"{len(dataset)} dados encontrados")
+        logger.debug(f"{len(dataset)} data found")
         # retorna a representação de produto
         print(dataset)
         return show_dataset(dataset), 200
@@ -118,7 +116,7 @@ def get_data(query: DataSearchSchema):
     # criando conexão com a base
     session = Session()
     # fazendo a busca
-    data = session.query(Data).filter(Data.id == data_name).first()
+    data = session.query(Data).filter(Data.name == data_name).first()
 
     if not data:
         # se o produto não foi encontrado
@@ -139,7 +137,6 @@ def del_data(query: DataSearchSchema):
     Retorna uma mensagem de confirmação da remoção.
     """
     data_name = unquote(unquote(query.name))
-    print(data_name)
     logger.debug(f"Deletando dados sobre produto #{data_name}")
     # criando conexão com a base
     session = Session()

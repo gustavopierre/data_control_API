@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
+
 from model.data import Data
-from datetime import datetime
 
 
 class DataSchema(BaseModel):
@@ -10,18 +10,18 @@ class DataSchema(BaseModel):
     name: str = "Ireland County Boundaries"
     area: str = "All Ireland"
     description: str = "Ireland County Boundaries"
-    creation_date: datetime = datetime.now()
-    update_date: datetime = datetime.now()
-    check_date: datetime = datetime.now()
     source: str =\
-        "https://data.gov.ie/dataset/counties-national-statutory-boundaries-2019"
-    creator: str = "Tailte Éireann – Surveying"
+        "https://data.gov.ie/dataset/\
+        counties-national-statutory-boundaries-2019"
+    creator: Optional[str] = "Tailte Éireann – Surveying"
     permitted: bool = True
-    copyright: str = "Creative Commons Attribution 4.0"
-    format: str = "SHP"
+    copyright: Optional[str] = "Creative Commons Attribution 4.0"
     link: str = "\\Dataset\\Ireland\\Counties"
-    info: str = "None"
+    info: Optional[str] = "None"
     coordinate_system: str = "ITM"
+    creation_date: Optional[str] = "01/01/2019"
+    update_date: Optional[str] = "01/01/2019"
+    format: str = "shapefile"
 
 
 class DataSearchSchema(BaseModel):
@@ -47,41 +47,42 @@ def show_dataset(dataset: List[Data]):
             "name": data.name,
             "area": data.area,
             "description": data.description,
-            "creation_date": data.creation_date,
-            "update_date": data.update_date,
-            "check_date": data.check_date,
             "source": data.source,
             "creator": data.creator,
             "permitted": data.permitted,
             "copyright": data.copyright,
-            "format": data.format,
             "link": data.link,
             "info": data.info,
-            "coordinate_system": data.coordinate_system
+            "coordinate_system": data.coordinate_system,
+            "creation_date": data.creation_date,
+            "update_date": data.update_date,
+            "format": data.format,
+            "check_date": data.check_date,
         })
 
     return {"dataset": result}
 
 
 class DataViewSchema(BaseModel):
-    """ Define como um dado será retornado.
+    """ Define how a data is returned.
     """
+    id: int = 1
     name: str = "Ireland County Boundaries"
     area: str = "All Ireland"
     description: str = "Ireland County Boundaries"
-    creation_date: datetime = datetime.now()
-    update_date: datetime = datetime.now()
-    check_date: datetime = datetime.now()
     source: str =\
-        "https://data.gov.ie/dataset/counties-national-statutory-boundaries-2019"
-    creator: str = "Ireland County Boundaries"
+        "https://data.gov.ie/dataset/\
+        counties-national-statutory-boundaries-2019"
+    creator: Optional[str] = "Tailte Éireann – Surveying"
     permitted: bool = True
-    copyright: str = "Ireland County Boundaries"
-    format: str = "Ireland County Boundaries"
-    link: str = "Ireland County Boundaries"
-    info: str = "Ireland County Boundaries"
+    copyright: Optional[str] = "Creative Commons Attribution 4.0"
+    link: str = "\\Dataset\\Ireland\\Counties"
+    info: Optional[str] = "None"
     coordinate_system: str = "ITM"
-    
+    creation_date: Optional[str] = "01/01/2019"
+    update_date: Optional[str] = "01/01/2019"
+    format: str = "shapefile"
+
 
 class DataDelSchema(BaseModel):
     """ Define como deve ser a estrutura do dado retornado após uma requisição
@@ -96,18 +97,19 @@ def show_data(data: Data):
         DataViewSchema.
     """
     return {
+        "id": data.id,
         "name": data.name,
         "area": data.area,
         "description": data.description,
-        "creation_date": data.creation_date,
-        "update_date": data.update_date,
-        "check_date": data.check_date,
         "source": data.source,
         "creator": data.creator,
         "permitted": data.permitted,
         "copyright": data.copyright,
-        "format": data.format,
         "link": data.link,
         "info": data.info,
-        "coordinate_system": data.coordinate_system
+        "coordinate_system": data.coordinate_system,
+        "creation_date": data.creation_date,
+        "update_date": data.update_date,
+        "format": data.format,
+        "check_date": data.check_date
     }
