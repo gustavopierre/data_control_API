@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask_openapi3 import OpenAPI, Info, Tag
 from flask import redirect
 from urllib.parse import unquote
@@ -127,6 +128,87 @@ def get_data(query: DataSearchSchema):
         logger.debug(f"Dado econtrado: '{data.name}'")
         # retorna a representação de produto
         return show_data(data), 200
+
+
+@app.patch('/data', tags=[data_tag],
+            responses={"200": DataViewSchema, "404": ErrorSchema})
+def patch_data(query: DataSearchSchema):
+    """Atualiza o check_date, com a dta corrente, de um Produto a partir do 
+    nome de produto informado """
+    data_name = query.name
+    logger.debug(f"Coletando dados sobre produto #{data_name}")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    data = session.query(Data).filter(Data.name == data_name).first()
+
+    if not data:
+        # se o produto não foi encontrado
+        error_msg = "Dado não encontrado na base :/"
+        logger.warning(f"Erro ao buscar dado '{data_name}', {error_msg}")
+        return {"message": error_msg}, 404
+    else:
+        logger.debug(f"Dado econtrado: '{data.name}'")
+        data.check_date = datetime.now()
+        session.commit()
+        logger.debug(f"Dado alterado: '{data.name}'")
+        # retorna a representação de produto
+        return show_data(data), 200
+
+
+@app.put('/data', tags=[data_tag],
+            responses={"200": DataViewSchema, "404": ErrorSchema})
+def update_data(query: DataSearchSchema, form: DataSchema):
+    """Atualiza um Produto a partir do nome de produto informado
+
+    Retorna uma representação do produto atualizado.
+    """
+    data_name = query.name
+    logger.debug(f"Coletando dados sobre produto #{data_name}")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    data = session.query(Data).filter(Data.name == data_name).first()
+
+    if not data:
+        # se o produto não foi encontrado
+        error_msg = "Dado não encontrado na base :/"
+        logger.warning(f"Erro ao buscar dado '{data_name}', {error_msg}")
+        return {"message": error_msg}, 404
+    else:
+        logger.debug(f"Dado encontrado: '{data.name}'")
+        try:
+            # atualizando os dados
+            data.name = form.name
+            data.area = form.area
+            data.description = form.description
+            data.source = form.source
+            data.creator = form.creator
+            data.permitted = form.permitted
+            data.copyright = form.copyright
+            data.link = form.link
+            data.info = form.info
+            data.coordinate_system = form.coordinate_system
+            data.creation_date = form.creation_date
+            data.update_date = form.update_date
+            data.format = form.format
+            data.check_date = datetime.now()
+            session.commit()
+            logger.debug(f"Dado atualizado: '{data.name}'")
+            # retorna a representação de produto
+            return show_data(data), 200
+        
+        except IntegrityError:
+            # name duplicity is the likely reason for the IntegrityError
+            error_msg = "Data has same name as one saved on the database :/"
+            logger.warning(f"Error to add data '{data.name}', {error_msg}")
+            return {"message": error_msg}, 409
+        
+        except Exception:
+            # caso um erro fora do previsto
+            error_msg = "It is not possible to save new data :/"
+            logger.warning(f"Error to add data '{data.name}', {error_msg}")
+            return {"message": error_msg}, 400
 
 
 @app.delete('/data', tags=[data_tag],
