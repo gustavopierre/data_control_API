@@ -130,10 +130,35 @@ def get_data(query: DataSearchSchema):
         return show_data(data), 200
 
 
+@app.get('/area', tags=[data_tag],
+         responses={"200": ListDatasetSchema, "404": ErrorSchema})
+def get_area(query: AreaSearchSchema):
+    """Faz a busca por um Produto a partir da area do produto
+
+    Retorna uma representação dos produtos e comentários associados.
+    """
+    data_area = query.area
+    logger.debug(f"Coletando dados da area: #{data_area}")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    dataset = session.query(Data).filter(Data.area == data_area).all()
+
+    if not dataset:
+        # se o produto não foi encontrado
+        error_msg = "Dado não encontrado na base :/"
+        logger.warning(f"Erro ao buscar dado '{data_area}', {error_msg}")
+        return {"message": error_msg}, 404
+    else:
+        logger.debug(f"{len(dataset)} data found")
+        # retorna a representação de produto
+        return show_dataset(dataset), 200
+
+
 @app.patch('/data', tags=[data_tag],
-            responses={"200": DataViewSchema, "404": ErrorSchema})
+           responses={"200": DataViewSchema, "404": ErrorSchema})
 def patch_data(query: DataSearchSchema):
-    """Atualiza o check_date, com a dta corrente, de um Produto a partir do 
+    """Atualiza o check_date, com a dta corrente, de um Produto a partir do
     nome de produto informado """
     data_name = query.name
     logger.debug(f"Coletando dados sobre produto #{data_name}")
@@ -157,7 +182,7 @@ def patch_data(query: DataSearchSchema):
 
 
 @app.put('/data', tags=[data_tag],
-            responses={"200": DataViewSchema, "404": ErrorSchema})
+         responses={"200": DataViewSchema, "404": ErrorSchema})
 def update_data(query: DataSearchSchema, form: DataSchema):
     """Atualiza um Produto a partir do nome de produto informado
 
@@ -197,13 +222,13 @@ def update_data(query: DataSearchSchema, form: DataSchema):
             logger.debug(f"Dado atualizado: '{data.name}'")
             # retorna a representação de produto
             return show_data(data), 200
-        
+
         except IntegrityError:
             # name duplicity is the likely reason for the IntegrityError
             error_msg = "Data has same name as one saved on the database :/"
             logger.warning(f"Error to add data '{data.name}', {error_msg}")
             return {"message": error_msg}, 409
-        
+
         except Exception:
             # caso um erro fora do previsto
             error_msg = "It is not possible to save new data :/"

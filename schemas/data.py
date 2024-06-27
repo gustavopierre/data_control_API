@@ -31,6 +31,12 @@ class DataSearchSchema(BaseModel):
     name: str = "Teste"
 
 
+class AreaSearchSchema(BaseModel):
+    """ Define como deve ser a estrutura que representa a busca por area.
+    """
+    area: str = "Teste"
+
+
 class ListDatasetSchema(BaseModel):
     """ Define como uma listagem de dados será retornada.
     """
