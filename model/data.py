@@ -44,7 +44,7 @@ class Data(Base):
                  coordinate_system: str,
                  creation_date: Union[DateTime, None] = None,
                  update_date: Union[DateTime, None] = None,
-                 format: str):
+                 format: str = "shp"):
         """
         Cria um Produto
 
