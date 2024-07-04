@@ -9,18 +9,18 @@ class Data(Base):
 
     id = Column("pk_data", Integer, primary_key=True, autoincrement=True)
     name = Column(String(140), unique=True)
-    area = Column(String(140))
-    description = Column(String(255))
+    area = Column(String(20), nullable=False)
+    description = Column(String(255), nullable=False)
     source = Column(String(140))
     creator = Column(String(140))
     permitted = Column(Boolean, default=True, nullable=False)
     copyright = Column(String(140))
     link = Column(String(140))
     info = Column(String(255))
-    coordinate_system = Column(String(140), nullable=False)
+    coordinate_system = Column(String(6), nullable=False)
     creation_date = Column(String(10))
     update_date = Column(String(10))
-    format = Column(String(150), nullable=False)
+    format = Column(String(4), nullable=False)
     check_date = Column(DateTime, default=datetime.now())
 
     def __init__(self,

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from model.data import Data
 
@@ -19,9 +19,9 @@ class DataSchema(BaseModel):
     link: str = "\\Dataset\\Ireland\\Counties"
     info: Optional[str] = "None"
     coordinate_system: str = "ITM"
-    creation_date: Optional[str] = "01/01/2019"
-    update_date: Optional[str] = "01/01/2019"
-    format: str = "shapefile"
+    creation_date: Union[str, None] = None
+    update_date: Union[str, None] = None
+    format: str = "SHP"
 
 
 class DataSearchSchema(BaseModel):
@@ -76,7 +76,7 @@ class DataViewSchema(BaseModel):
     name: str = "Ireland County Boundaries"
     area: str = "All Ireland"
     description: str = "Ireland County Boundaries"
-    source: str =\
+    source: Optional[str] =\
         "https://data.gov.ie/dataset/\
         counties-national-statutory-boundaries-2019"
     creator: Optional[str] = "Tailte Éireann – Surveying"
@@ -85,9 +85,9 @@ class DataViewSchema(BaseModel):
     link: str = "\\Dataset\\Ireland\\Counties"
     info: Optional[str] = "None"
     coordinate_system: str = "ITM"
-    creation_date: Optional[str] = "01/01/2019"
-    update_date: Optional[str] = "01/01/2019"
-    format: str = "shapefile"
+    creation_date: Union[str, None] = "01/01/2019"
+    update_date: Union[str, None] = "01/01/2019"
+    format: str = "SHP"
 
 
 class DataDelSchema(BaseModel):

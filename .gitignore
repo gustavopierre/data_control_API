@@ -163,3 +163,5 @@ cython_debug/
 
 # log files
 log/
+# database
+database/
