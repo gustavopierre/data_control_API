@@ -73,6 +73,7 @@ class Data(Base):
         self.creation_date = creation_date
         self.update_date = update_date
         self.format = format
-        # se não for informada, será o data exata da inserção no banco
+        # if the check_date is not informed, it will be the exact date 
+        # of the insertion in the database
         if check_date:
             self.check_date = check_date

@@ -14,14 +14,14 @@ info = Info(title="DataControl API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
-# definindo tags
+# defining tags
 home_tag = Tag(
     name="Documentation",
     description="Documentation Selection: Swagger, Redoc ou RapiDoc"
     )
 data_tag = Tag(
     name="Data",
-    description="Adding, Viewing and Removing Data to/from the Database"
+    description="Searching, Adding, Viewing and Removing Data to/from the Database"
     )
 
 
@@ -76,7 +76,7 @@ def add_data(form: DataSchema):
         return {"message": error_msg}, 409
 
     except Exception:
-        # caso um erro fora do previsto
+        # in case of a error out of the expected
         error_msg = "It is not possible to save new data :/"
         logger.warning(f"Error to add data '{data.name}', {error_msg}")
         return {"message": error_msg}, 400
@@ -85,22 +85,21 @@ def add_data(form: DataSchema):
 @app.get('/dataset', tags=[data_tag],
          responses={"200": ListDatasetSchema, "404": ErrorSchema})
 def get_dataset():
-    """Faz a busca por todos os Produto cadastrados
-
-    Retorna uma representação da listagem de produtos.
+    """Search for all registered Data.
+    Returns a representation of the list of Data.
     """
-    logger.debug("Coletando dados ")
-    # criando conexão com a base
+    logger.debug("Collecting data from the database.")
+    # creating a connection with the database
     session = Session()
-    # fazendo a busca
+    # searching
     dataset = session.query(Data).all()
 
     if not dataset:
-        # se não há produtos cadastrados
+        # if there are no registered data
         return {"Dataset": []}, 200
     else:
         logger.debug(f"{len(dataset)} data found")
-        # retorna a representação de produto
+        # returns the representation of data
         print(dataset)
         return show_dataset(dataset), 200
 
@@ -108,102 +107,103 @@ def get_dataset():
 @app.get('/data', tags=[data_tag],
          responses={"200": DataViewSchema, "404": ErrorSchema})
 def get_data(query: DataSearchSchema):
-    """Faz a busca por um Produto a partir do id do produto
-
-    Retorna uma representação dos produtos e comentários associados.
+    """Search for a Data from the data name
+    
+    Returns a representation of the Data.
     """
     data_name = query.name
-    logger.debug(f"Coletando dados sobre produto #{data_name}")
-    # criando conexão com a base
+    logger.debug(f"Collecting data from the product: #{data_name}") 
+    
+    # creating a connection with the database
     session = Session()
-    # fazendo a busca
+    # searching
     data = session.query(Data).filter(Data.name == data_name).first()
 
     if not data:
-        # se o produto não foi encontrado
-        error_msg = "Dado não encontrado na base :/"
-        logger.warning(f"Erro ao buscar dado '{data_name}', {error_msg}")
+        # if the data was not found
+        error_msg = "Data not found in the database :/"
+        logger.warning(f"Error searching for data '{data_name}', {error_msg}")
         return {"message": error_msg}, 404
     else:
-        logger.debug(f"Dado econtrado: '{data.name}'")
-        # retorna a representação de produto
+        logger.debug(f"Data found: '{data.name}'")
+        # returns the representation of data
         return show_data(data), 200
 
 
 @app.get('/area', tags=[data_tag],
          responses={"200": ListDatasetSchema, "404": ErrorSchema})
 def get_area(query: AreaSearchSchema):
-    """Faz a busca por um Produto a partir da area do produto
+    """ Search for a Data from the data area
 
-    Retorna uma representação dos produtos e comentários associados.
+    Returns a representation of the Data
     """
     data_area = query.area
-    logger.debug(f"Coletando dados da area: #{data_area}")
-    # criando conexão com a base
+    logger.debug(f"Collecting data from the area: #{data_area}")
+    # creating a connection with the database
     session = Session()
-    # fazendo a busca
+    # searching
     dataset = session.query(Data).filter(Data.area == data_area).all()
 
     if not dataset:
-        # se o produto não foi encontrado
-        error_msg = "Dado não encontrado na base :/"
-        logger.warning(f"Erro ao buscar dado '{data_area}', {error_msg}")
+        # if the data was not found
+        error_msg = "Data not found in the database :/"
+        logger.warning(f"Error searching for data '{data_area}', {error_msg}")
         return {"message": error_msg}, 404
     else:
         logger.debug(f"{len(dataset)} data found")
-        # retorna a representação de produto
+        # returns the representation of data
         return show_dataset(dataset), 200
 
 
 @app.patch('/data', tags=[data_tag],
            responses={"200": DataViewSchema, "404": ErrorSchema})
 def patch_data(query: DataSearchSchema):
-    """Atualiza o check_date, com a dta corrente, de um Produto a partir do
-    nome de produto informado """
+    """Update the check_date, with the current date, of a Data from the informed name of the data
+    """
     data_name = query.name
-    logger.debug(f"Coletando dados sobre produto #{data_name}")
-    # criando conexão com a base
+    logger.debug(f"Collecting data from the product: #{data_name}")
+    # creating a connection with the database
     session = Session()
-    # fazendo a busca
+    # searching
     data = session.query(Data).filter(Data.name == data_name).first()
 
     if not data:
-        # se o produto não foi encontrado
-        error_msg = "Dado não encontrado na base :/"
-        logger.warning(f"Erro ao buscar dado '{data_name}', {error_msg}")
+        # if the data was not found
+        error_msg = "Data not found in the database :/"
+        logger.warning(f"Error searching for data '{data_name}', {error_msg}")
         return {"message": error_msg}, 404
     else:
-        logger.debug(f"Dado econtrado: '{data.name}'")
+        logger.debug(f"Data found: '{data.name}'")
         data.check_date = datetime.now()
         session.commit()
-        logger.debug(f"Dado alterado: '{data.name}'")
-        # retorna a representação de produto
+        logger.debug(f"Data changed: '{data.name}'")
+        # returns the representation of data
         return show_data(data), 200
 
 
 @app.put('/data', tags=[data_tag],
          responses={"200": DataViewSchema, "404": ErrorSchema})
 def update_data(query: DataSearchSchema, form: DataSchema):
-    """Atualiza um Produto a partir do nome de produto informado
-
-    Retorna uma representação do produto atualizado.
+    """Update a Data from the informed name of the data
+    
+    Returns a representation of the updated data.
     """
     data_name = query.name
-    logger.debug(f"Coletando dados sobre produto #{data_name}")
-    # criando conexão com a base
+    logger.debug(f"Collecting data from the product: #{data_name}")
+    # creating a connection with the database
     session = Session()
-    # fazendo a busca
+    # searching
     data = session.query(Data).filter(Data.name == data_name).first()
 
     if not data:
-        # se o produto não foi encontrado
-        error_msg = "Dado não encontrado na base :/"
-        logger.warning(f"Erro ao buscar dado '{data_name}', {error_msg}")
+        # if the data was not found
+        error_msg = "Data not found in the database :/"
+        logger.warning(f"Error searching for data '{data_name}', {error_msg}")
         return {"message": error_msg}, 404
     else:
-        logger.debug(f"Dado encontrado: '{data.name}'")
+        logger.debug(f"Data found: '{data.name}'")
         try:
-            # atualizando os dados
+            # updating the data
             data.name = form.name
             data.area = form.area
             data.description = form.description
@@ -220,7 +220,7 @@ def update_data(query: DataSearchSchema, form: DataSchema):
             data.check_date = datetime.now()
             session.commit()
             logger.debug(f"Dado atualizado: '{data.name}'")
-            # retorna a representação de produto
+            # returns the representation of data
             return show_data(data), 200
 
         except IntegrityError:
@@ -230,7 +230,7 @@ def update_data(query: DataSearchSchema, form: DataSchema):
             return {"message": error_msg}, 409
 
         except Exception:
-            # caso um erro fora do previsto
+            # in case of a error out of the expected
             error_msg = "It is not possible to save new data :/"
             logger.warning(f"Error to add data '{data.name}', {error_msg}")
             return {"message": error_msg}, 400
@@ -239,24 +239,24 @@ def update_data(query: DataSearchSchema, form: DataSchema):
 @app.delete('/data', tags=[data_tag],
             responses={"200": DataDelSchema, "404": ErrorSchema})
 def del_data(query: DataSearchSchema):
-    """Deleta um Produto a partir do nome de produto informado
+    """Delete a Data from the informed name of the data
 
-    Retorna uma mensagem de confirmação da remoção.
+    Returns a confirmation message of the removal.
     """
     data_name = unquote(unquote(query.name))
-    logger.debug(f"Deletando dados sobre produto #{data_name}")
-    # criando conexão com a base
+    logger.debug(f"Deleting data about product #{data_name}")
+    # creating a connection with the database
     session = Session()
-    # fazendo a remoção
+    # deleting
     count = session.query(Data).filter(Data.name == data_name).delete()
     session.commit()
 
     if count:
-        # retorna a representação da mensagem de confirmação
-        logger.debug(f"Deletado dado #{data_name}")
-        return {"message": "Dado removido", "id": data_name}
+        # returns the representation of the confirmation message
+        logger.debug(f"Deleted data #{data_name}")
+        return {"message": "Data removed", "name": data_name}
     else:
-        # se o produto não foi encontrado
-        error_msg = "Dado não encontrado na base :/"
-        logger.warning(f"Erro ao deletar dado #'{data_name}', {error_msg}")
+        # if the data was not found
+        error_msg = "Data not found in the database :/"
+        logger.warning(f"Error searching for data '{data_name}', {error_msg}")
         return {"message": error_msg}, 404

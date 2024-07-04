@@ -5,7 +5,7 @@ from model.data import Data
 
 
 class DataSchema(BaseModel):
-    """ Define como um novo dado a ser inserido deve ser representado
+    """ Defines how new data to be inserted should be represented
     """
     name: str = "Ireland County Boundaries"
     area: str = "All Ireland"
@@ -25,27 +25,26 @@ class DataSchema(BaseModel):
 
 
 class DataSearchSchema(BaseModel):
-    """ Define como deve ser a estrutura que representa a busca. Que será
-        feita apenas com base na area do dado.
+    """Define how a search should be represented. 
+        That will be done based on the name of the data.
     """
     name: str = "Teste"
 
 
 class AreaSearchSchema(BaseModel):
-    """ Define como deve ser a estrutura que representa a busca por area.
+    """ Define how a search should be represented.
     """
     area: str = "Teste"
 
 
 class ListDatasetSchema(BaseModel):
-    """ Define como uma listagem de dados será retornada.
+    """ Define how a list of data should be returned.
     """
     dataset: List[DataSchema]
 
 
 def show_dataset(dataset: List[Data]):
-    """ Retorna uma representação do dado seguindo o schema definido em
-        DataViewSchema.
+    """ Returns a representation of the data following the schema defined in DataViewSchema.
     """
     result = []
     for data in dataset:
@@ -91,16 +90,14 @@ class DataViewSchema(BaseModel):
 
 
 class DataDelSchema(BaseModel):
-    """ Define como deve ser a estrutura do dado retornado após uma requisição
-        de remoção.
+    """ Define how should be the structure of the data returned after a removal request. 
     """
     message: str
     name: str
 
 
 def show_data(data: Data):
-    """ Retorna uma representação do dado seguindo o schema definido em
-        DataViewSchema.
+    """ Returns a representation of the data following the schema defined in DataViewSchema.
     """
     return {
         "id": data.id,
