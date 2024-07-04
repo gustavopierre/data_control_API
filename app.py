@@ -158,7 +158,7 @@ def get_area(query: AreaSearchSchema):
 @app.patch('/data', tags=[data_tag],
            responses={"200": DataViewSchema, "404": ErrorSchema})
 def patch_data(query: DataSearchSchema):
-    """Update the check_date, with the current date, of a Data from the informed name of the data
+    """Update the check date, with the current date, of a specified Data by its name
     """
     data_name = query.name
     logger.debug(f"Collecting data from the product: #{data_name}")

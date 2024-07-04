@@ -19,8 +19,8 @@ class DataSchema(BaseModel):
     link: str = "\\Dataset\\Ireland\\Counties"
     info: Optional[str] = "None"
     coordinate_system: str = "ITM"
-    creation_date: Union[str, None] = None
-    update_date: Union[str, None] = None
+    creation_date: Union[str, None] = "01/01/2019"
+    update_date: Union[str, None] = "01/01/2019"
     format: str = "SHP"
 
 
