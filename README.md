@@ -1,8 +1,8 @@
 # Minha API
 
-Este projeto e o MVP da Sprint  **Desenvolvimento Full Stack Básico** 
+A aplicacao Data Control e o MVP da Sprint  **Desenvolvimento Full Stack Básico** 
 
-Sua funcao e o backend de um Sistema de controle de datasets com diferentes formatos.
+Sua funcao e o backend de um sistema de controle dos dados usados para serem camadas nos softwares de geoprocessamento.
 
 ---
 ## Como executar 
