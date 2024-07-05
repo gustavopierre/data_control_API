@@ -85,7 +85,7 @@ def add_data(form: DataSchema):
 @app.get('/dataset', tags=[data_tag],
          responses={"200": ListDatasetSchema, "404": ErrorSchema})
 def get_dataset():
-    """Search for all registered Data.
+    """Search all Dataset.
     Returns a representation of the list of Data.
     """
     logger.debug("Collecting data from the database.")

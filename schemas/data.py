@@ -10,9 +10,9 @@ class DataSchema(BaseModel):
     name: str = "Ireland County Boundaries"
     area: str = "All Ireland"
     description: str = "Ireland County Boundaries"
-    source: str =\
-        "https://data.gov.ie/dataset/\
-        counties-national-statutory-boundaries-2019"
+    source: str = "https://data.gov.ie/dataset/counties-\
+        national-statutory-boundaries-2019"
+
     creator: Optional[str] = "Tailte Éireann – Surveying"
     permitted: bool = True
     copyright: Optional[str] = "Creative Commons Attribution 4.0"

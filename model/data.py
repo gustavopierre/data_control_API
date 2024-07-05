@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, DateTime, Boolean, Integer
 from datetime import datetime
-from typing import Optional
+from typing import Union, Optional
 from model import Base
 
 
@@ -21,7 +21,7 @@ class Data(Base):
     creation_date = Column(String(10))
     update_date = Column(String(10))
     format = Column(String(4), nullable=False)
-    check_date = Column(DateTime, default=datetime.now(), nullable=False)
+    check_date = Column(DateTime, default=datetime.now())
 
     def __init__(self,
                  name: str,
@@ -68,20 +68,20 @@ class Data(Base):
             format {str} -- format of the data It must be: Shapefile (SHP),
                 Geodatabase (GDB), Common Separated Values (CSV), Web Feature
                 Service (WFS), or Web Map Service (WMS).
-            check_date {Union[DateTime, None]} -- date of the check of the data
+            check_date {DateTime} -- date of the check of the data
         """
         self.name = name
         self.area = area
         self.description = description
-        self.source = Optional(source)
-        self.creator = Optional(creator)
+        self.source = source
+        self.creator = creator
         self.permitted = permitted
-        self.copyright = Optional(copyright)
+        self.copyright = copyright
         self.link = link
-        self.info = Optional(info)
+        self.info = info
         self.coordinate_system = coordinate_system
-        self.creation_date = Optional(creation_date)
-        self.update_date = Optional(update_date)
+        self.creation_date = creation_date
+        self.update_date = update_date
         self.format = format
         # if the check_date is not informed, it will be the exact date 
         # of the insertion in the database
