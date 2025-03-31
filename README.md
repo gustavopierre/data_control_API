@@ -9,6 +9,8 @@ Sua funcao e o backend de um sistema de controle dos dados usados para serem cam
  - [SQLite](https://www.sqlite.org/index.html)
  - [Docker](https://www.docker.com/)
 
+A API e acessada pelo [Frontend](https://github.com/gustavopierre/data_control_frontend), disponibilizado no github tambem.
+
 ---
 ## Instalacao 
 
