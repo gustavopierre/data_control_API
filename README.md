@@ -11,6 +11,8 @@ Sua funcao e o backend de um sistema de controle dos dados usados para serem cam
 
 A API e acessada pelo [Frontend](https://github.com/gustavopierre/data_control_frontend), disponibilizado no github tambem.
 
+O repositorio contem um banco de dados SQLite com alguns registros populados para que seja feita a verificacao da utilizacao de API externa via Frontend.
+
 ---
 ## Instalacao 
 
