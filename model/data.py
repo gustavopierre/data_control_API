@@ -22,6 +22,13 @@ class Data(Base):
     update_date = Column(String(10))
     format = Column(String(4), nullable=False)
     check_date = Column(DateTime, default=datetime.now())
+    
+    # Frequency of data update in days
+    # It is used to calculate the next update date
+    update_frequency_days = Column(Integer, nullable=True)  
+    # The bounding box of the data in the format "minLat, maxLat, minLon, maxLon"
+    # It is used to store the geographical area covered by the data
+    bounding_box = Column(String(255), nullable=True)  
 
     def __init__(self,
                  name: str,
@@ -37,7 +44,10 @@ class Data(Base):
                  creation_date: str,
                  update_date: str,
                  format: str,
-                 check_date: datetime = datetime.now()
+                 check_date: datetime = datetime.now(),
+                 # update frequency and bounding box are optional
+                 update_frequency_days: Optional[int] = None,
+                 bounding_box: Optional[str] = None
                  ):
         """
         Creates a data
@@ -87,3 +97,6 @@ class Data(Base):
         # of the insertion in the database
         if check_date:
             self.check_date = check_date
+        # update frequency and bounding box
+        self.update_frequency_days = update_frequency_days
+        self.bounding_box = bounding_box

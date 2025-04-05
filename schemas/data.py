@@ -22,6 +22,9 @@ class DataSchema(BaseModel):
     creation_date: Union[str, None] = "01/01/2019"
     update_date: Union[str, None] = "01/01/2019"
     format: str = "SHP"
+    # update frequency and bounding box
+    update_frequency_days: Optional[int] = 90
+    bounding_box: Optional[str] = None
 
 
 class DataSearchSchema(BaseModel):
@@ -63,6 +66,9 @@ def show_dataset(dataset: List[Data]):
             "update_date": data.update_date,
             "format": data.format,
             "check_date": data.check_date,
+            # update frequency and bounding box
+            "update_frequency_days": data.update_frequency_days,
+            "bounding_box": data.bounding_box
         })
 
     return {"dataset": result}
@@ -87,6 +93,9 @@ class DataViewSchema(BaseModel):
     creation_date: Union[str, None] = "01/01/2019"
     update_date: Union[str, None] = "01/01/2019"
     format: str = "SHP"
+    # update frequency and bounding box
+    update_frequency_days: Optional[int] = 90
+    bounding_box: Optional[str] = None
 
 
 class DataDelSchema(BaseModel):
@@ -97,7 +106,8 @@ class DataDelSchema(BaseModel):
 
 
 def show_data(data: Data):
-    """ Returns a representation of the data following the schema defined in DataViewSchema.
+    """ Returns a representation of the data following the schema 
+    defined in DataViewSchema.
     """
     return {
         "id": data.id,
@@ -114,5 +124,8 @@ def show_data(data: Data):
         "creation_date": data.creation_date,
         "update_date": data.update_date,
         "format": data.format,
-        "check_date": data.check_date
+        "check_date": data.check_date,
+        # update frequency and bounding box
+        "update_frequency_days": data.update_frequency_days,
+        "bounding_box": data.bounding_box
     }

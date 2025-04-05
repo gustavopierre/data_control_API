@@ -56,7 +56,11 @@ def add_data(form: DataSchema):
         coordinate_system=form.coordinate_system,
         creation_date=form.creation_date,
         update_date=form.update_date,
-        format=form.format)
+        format=form.format,
+        # update frequency and bounding box
+        update_frequency_days=form.update_frequency_days,
+        bounding_box=form.bounding_box
+        )
 
     logger.debug(f"Adding Data named: '{data.name}'")
     try:
@@ -218,6 +222,12 @@ def update_data(query: DataSearchSchema, form: DataSchema):
             data.update_date = form.update_date
             data.format = form.format
             data.check_date = datetime.now()
+            # update frequency and bounding box
+            data.update_frequency_days = form.update_frequency_days
+            data.bounding_box = form.bounding_box
+            
+            # effectively executing the command to update the data in the table
+            # and committing the changes to the database
             session.commit()
             logger.debug(f"Dado atualizado: '{data.name}'")
             # returns the representation of data
