@@ -24,7 +24,7 @@ class DataSchema(BaseModel):
     format: str = "SHP"
     # update frequency and bounding box
     update_frequency_days: Optional[int] = 90
-    bounding_box: Optional[str] = None
+    bounding_box: Optional[str] = "49.8822952975038 -6.36645881486726; 51.679402308989 0.240313964132312"
 
 
 class DataSearchSchema(BaseModel):
@@ -95,7 +95,7 @@ class DataViewSchema(BaseModel):
     format: str = "SHP"
     # update frequency and bounding box
     update_frequency_days: Optional[int] = 90
-    bounding_box: Optional[str] = None
+    bounding_box: Optional[str] = "49.8822952975038 -6.36645881486726; 51.679402308989 0.240313964132312"
 
 
 class DataDelSchema(BaseModel):

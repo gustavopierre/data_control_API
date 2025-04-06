@@ -193,6 +193,8 @@ def update_data(query: DataSearchSchema, form: DataSchema):
     Returns a representation of the updated data.
     """
     data_name = query.name
+    # debug
+    print(data_name)
     logger.debug(f"Collecting data from the product: #{data_name}")
     # creating a connection with the database
     session = Session()

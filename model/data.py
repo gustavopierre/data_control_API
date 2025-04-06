@@ -44,10 +44,10 @@ class Data(Base):
                  creation_date: str,
                  update_date: str,
                  format: str,
-                 check_date: datetime = datetime.now(),
                  # update frequency and bounding box are optional
-                 update_frequency_days: Optional[int] = None,
-                 bounding_box: Optional[str] = None
+                 update_frequency_days: Optional[int],
+                 bounding_box: Optional[str],
+                 check_date: datetime = datetime.now(),
                  ):
         """
         Creates a data
