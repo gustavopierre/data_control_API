@@ -23,7 +23,7 @@ Os componentes da aplicação são:
  - API externa - A interface possibilita o acesso a APIs externas de dados cadastrados do tipo Web Feature Server (WFS) compatível com o formato JSON da ESRI, salvando o retângulo envolvente (bounding box) de um dado novo ou alterando-o, de um dado existente, em virtude de sua atualização.
 
 ## Docker
-A aplicação pode ser clonada do GitHub e executada criando um ambiente com os devidos requisitos ou utilizando containers [Docker](https://www.docker.com/). Criam-se duas imagens, uma para o frontend e outra para o backend, conforme instruções nos respectivos repositórios, e executam-se essas imagens. Os arquivos README.md têm instruções para criação das imagens, execução delas e execução do frontend e do backend.
+A aplicação pode ser clonada do GitHub e executada criando um ambiente com os devidos requisitos ou utilizando containers [Docker](https://www.docker.com/). Criam-se duas imagens, uma para o frontend e outra para o backend, conforme instruções nos respectivos repositórios, e executam-se essas imagens. Os arquivos README.md têm instruções para criação das imagens, execução delas e execução do frontend ou do backend.
 
 ## Detalhamento
 Data Control API é o backend da aplicação de controle dos dados usados para serem camadas (layers) nos softwares de geoprocessamento. As principais tecnologias utilizadas são:
